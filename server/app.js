@@ -4,10 +4,10 @@ const port = 3000; // Define the port for the application
 
 // Define a basic GET route for the root URL
 app.get('/', (req, res) => {
-  res.send('Hello World!'); // Send "Hello World!" as the response
+  res.send('Hello Anas Nabeela!'); // Send "Hello World!" as the response
 });
 
 // Start the server and listen on the specified port
 app.listen(port, () => {
-  console.log(`Example app listening on port ${port}`);
+  console.log(`My app listening on port ${port}`);
 });
