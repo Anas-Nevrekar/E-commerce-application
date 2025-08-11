@@ -1,11 +1,30 @@
-const express = require('express'); // Import the Express module
+const express = require('express'); 
 const app = express(); // Create an Express application instance
-const port = 3000; // Define the port for the application
+const port = process.env.PORT || 3000; 
+const cookieParser = require('cookie-parser');
 
-// Define a basic GET route for the root URL
-app.get('/', (req, res) => {
-  res.send('Hello Anas Nabeela!'); // Send "Hello World!" as the response
-});
+// Importing mongoose for database connection
+const mongoose = require('mongoose');
+require('./config/db.config');
+
+//importing ejs
+app.set('view engine', 'ejs'); // Set EJS as the template engine
+app.set('views', './views'); // Set the directory for views
+
+
+//Middlewares
+app.use(express.json()); // Middleware to parse  JSON bodies.  
+app.use(express.urlencoded({ extended: true })); // Middleware to parse URL-encoded bodies
+app.use(cookieParser());
+
+
+
+// Importing the login routes
+const loginRoutes = require('./routes/login.routes');
+const homeRoutes = require('./routes/home.routes');
+app.use('/', loginRoutes); // link the login routes to the '/login' path
+app.use("/home", homeRoutes); 
+
 
 // Start the server and listen on the specified port
 app.listen(port, () => {
