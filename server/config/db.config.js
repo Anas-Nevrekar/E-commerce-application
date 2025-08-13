@@ -1,7 +1,10 @@
 
 const mongoose = require('mongoose');
 
-const uri = 'mongodb://localhost:27017/E-commerce-application'; // Replace with your Compass connection string
+// const uri = 'mongodb://localhost:27017/E-commerce-application'; // Replace with your Compass connection string
+
+const uri = "mongodb+srv://nevrekaranas:BTOfzpZg90OgC8OJ@cluster0.trjwbhk.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0"
+
 
 mongoose.connect(uri, { // Options for the connection
   useUnifiedTopology: true  // Use the new URL string parser and unified topology

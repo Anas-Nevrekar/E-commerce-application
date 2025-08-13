@@ -17,3 +17,6 @@ To-do for login:
 Task2:
 Create schema for product
 All api's for home
+
+
+MongodbBTOfzpZg90OgC8OJ username & password
