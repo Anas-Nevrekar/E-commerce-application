@@ -1,2 +1,19 @@
 Task 1: 
 Login and SignIn functionalities
+
+To-do for login:
+1) form -> post, /login
+    input for username
+    input for password
+    button submit
+
+2) route: post, /login -> login
+
+3) controller login:
+    a) check if user exist -> token -> cookie -> /homepage
+    b) If not exist -> loginpage bhej denge
+
+
+Task2:
+Create schema for product
+All api's for home

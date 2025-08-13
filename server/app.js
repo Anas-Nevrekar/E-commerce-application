@@ -15,7 +15,7 @@ app.set('views', './views'); // Set the directory for views
 //Middlewares
 app.use(express.json()); // Middleware to parse  JSON bodies.  
 app.use(express.urlencoded({ extended: true })); // Middleware to parse URL-encoded bodies
-app.use(cookieParser());
+app.use(cookieParser()); // Middleware to parse cookies
 
 
 

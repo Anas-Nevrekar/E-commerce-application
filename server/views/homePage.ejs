@@ -7,6 +7,15 @@
 </head>
 <body>
     <h1><%= message %></h1>
+    <% if (products.length === 0) { %>
+      <p>No products available.</p>
+    <% } else { %>
+      <ul>
+        <% products.forEach(product => { %>
+          <li><%= product.productName %> - <%= product.productPrice %></li>
+        <% }) %>
+      </ul>
+    <% } %>
     <form  action="/signout" method="get">
         <button type="submit">SignOut</button>
     </form>
