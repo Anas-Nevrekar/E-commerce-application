@@ -11,6 +11,7 @@ const User = require('../models/user.model'); // Importing the User model to int
 // Importing the controller
 const loginController = require('../controllers/login.controller');
 // Route to show the login page
+router.post('/login',loginController.handleLogin);
 router.get('/loginPage', loginController.showLoginPage); // Route to render the login pagedatabase
 
 router.post('/handleSignin', loginController.handleSignin); // Route to handle user sign-in

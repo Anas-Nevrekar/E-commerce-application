@@ -7,6 +7,27 @@ exports.showLoginPage = async (req, res) => {
   res.render('loginPage'); 
 }   
 
+// logic to implement login feature 
+exports.handleLogin = async (req, res) => {
+  const { username, password } = req.body;
+  try {
+      const user = await User.findOne({ username: username });
+      if (!user) {
+          return res.redirect("/loginPage");
+      }
+      //const isMatch= await User.comparePassword(password);
+      if (user.password !== password) {
+          return res.redirect("/loginPage");
+      }
+      const token = generateToken({ username: username });
+      res.cookie('token', token, { httpOnly: true });
+      return res.redirect("/home");
+  } catch (err) {
+      console.error(err);
+      return res.status(500).send("Internal Server Error");
+  }
+}
+
 
 // Logic to handle user sign-in
 exports.handleSignin = async (req, res) => {
