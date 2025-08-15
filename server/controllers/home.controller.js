@@ -36,3 +36,9 @@ exports.addProduct = async (req, res) => {
         res.status(500).send("Internal Server Error"); // Send an error response if something goes wrong
     }
 }
+
+exports.showProductDetails = async (req,res)=>{
+    const productId = req.params.id; // Get the product ID from the request parameters
+   const item = await Product.findById(productId);
+   res.render("productPage", { item });
+}
