@@ -11,5 +11,6 @@ router.get('/', authMiddleware, homeController.showHome); // Route to render the
 
 router.post("/addProduct", authMiddleware, adminMiddleware, homeController.addProduct); // Route to add a new product, requires authentication
 
+router.get("/product/:id", authMiddleware, homeController.showProductDetails); // Route to show product details by ID, requires authentication
 
 module.exports = router;

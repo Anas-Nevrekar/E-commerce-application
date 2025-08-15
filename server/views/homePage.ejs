@@ -4,6 +4,16 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <style>
+      .product-item {
+        cursor: pointer;
+        transition: box-shadow 0.2s;
+      }
+      .product-item:hover {
+        box-shadow: 0 0 10px #888;
+        background: #f5f5f5;
+      }
+    </style>
 </head>
 <body>
     <h1><%= message %></h1>
@@ -32,19 +42,21 @@
     <% } else { %>
       <div class="product-list"> 
           <% products.forEach(product => { %>
-            <div class="product-item"> 
+            <div class="product-item" onclick="window.location.href='/home/product/<%= product._id %>'">
+      
+              <img src="<%= product.productImage %>" alt="">
                   <h2><%= product.productName %> - <%= product.productPrice %></h2>
-                  <h2>  Product id: <%= product._id %>  </h2>
+                  <h2>Product id: <%= product._id %></h2>
                   <% if (user === "admin") { %>
-                  <div class="admin-view">
-                    <form  action="home/editProduct" method="get">
-                      <button type="submit">Edit Product</button>
-                    </form>
-                    <form  action="home/deleteProduct" method="get">
-                      <button type="submit">Delete Product</button>
-                    </form>
-                  </div>
-                  <% }else{ %>
+                    <div class="admin-view">
+                      <form  action="home/editProduct" method="get">
+                        <button type="submit">Edit Product</button>
+                      </form>
+                      <form  action="home/deleteProduct" method="get">
+                        <button type="submit">Delete Product</button>
+                      </form>
+                    </div>
+                  <% } else { %>
                     <div class="user-view"> 
                     <form  action="home/addCart" method="get">
                       <button type="submit">Add to Cart</button>
