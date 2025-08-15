@@ -28,18 +28,22 @@
     <% if (products.length === 0) { %>
       <p>No products available.</p>
     <% } else { %>
-      <ul>
-        <% products.forEach(product => { %>
-          <li><%= product.productName %> - <%= product.productPrice %></li>
-          <form  action="home/addCart" method="get">
-        <button type="submit">Add to Cart</button>
-    </form>
-    <form  action="home/buy" method="get">
-        <button type="submit">Buy Now</button>
-    </form>
+      <div class="product-list"> 
+          <% products.forEach(product => { %>
+            <div class="product-item"> 
+                  <h2><%= product.productName %> - <%= product.productPrice %></h2>
+                  <div class="user-view"> 
+                    <form  action="home/addCart" method="get">
+                      <button type="submit">Add to Cart</button>
+                    </form>
+                    <form  action="home/buy" method="get">
+                      <button type="submit">Buy Now</button>
+                    </form>
+                  </div>
+            </div>
 
-        <% }) %>
-      </ul>
+          <% }) %>
+      </div>
     <% } %>
     <form  action="/signout" method="get">
         <button type="submit">SignOut</button>
