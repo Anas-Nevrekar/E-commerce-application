@@ -7,7 +7,8 @@
 </head>
 <body>
     <h1><%= message %></h1>
-
+    <% if(user === "admin") { %>
+        <h2>Admin Panel</h2>
     <div>
       <h2>Add Product</h2>
       <form action ="home/addProduct" method="post">
@@ -25,6 +26,7 @@
         <button type="submit">Add Product</button>
       </form>
     </div>
+    <% }  %>
     <% if (products.length === 0) { %>
       <p>No products available.</p>
     <% } else { %>
@@ -32,14 +34,8 @@
           <% products.forEach(product => { %>
             <div class="product-item"> 
                   <h2><%= product.productName %> - <%= product.productPrice %></h2>
-                  <div class="user-view"> 
-                    <form  action="home/addCart" method="get">
-                      <button type="submit">Add to Cart</button>
-                    </form>
-                    <form  action="home/buy" method="get">
-                      <button type="submit">Buy Now</button>
-                    </form>
-                  </div>
+                  <h2>  Product id: <%= product._id %>  </h2>
+                  <% if (user === "admin") { %>
                   <div class="admin-view">
                     <form  action="home/editProduct" method="get">
                       <button type="submit">Edit Product</button>
@@ -48,11 +44,23 @@
                       <button type="submit">Delete Product</button>
                     </form>
                   </div>
+                  <% }else{ %>
+                    <div class="user-view"> 
+                    <form  action="home/addCart" method="get">
+                      <button type="submit">Add to Cart</button>
+                    </form>
+                    <form  action="home/buy" method="get">
+                      <button type="submit">Buy Now</button>
+                    </form>
+                  </div>
+                  <% } %>
             </div>
 
           <% }) %>
       </div>
     <% } %>
+
+    <hr>
     <form  action="/signout" method="get">
         <button type="submit">SignOut</button>
     </form>

@@ -4,13 +4,14 @@ const {authMiddleware, generateToken} = require('../middlewares/jwt.middleware')
 const Product = require('../models/product.model'); // Importing the Product model to interact with products in the database
 
 exports.showHome = async (req, res) => {
+    const user = req.user.username;
     const message = "Welcome to home page " + req.user.username;
     try {
         const products = await Product.find(); // Fetch all products
-        res.render("homePage", { message, products }); // Pass products to the view
+        res.render("homePage", { message, products, user }); // Pass products to the view
     } catch (error) {
         console.error("Error fetching products:", error);
-        res.render("homePage", { message, products: [] }); // Pass empty array on error
+        res.render("homePage", { message, products: [], user }); // Pass empty array on error
     }
 }
 
