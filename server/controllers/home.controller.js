@@ -38,7 +38,43 @@ exports.addProduct = async (req, res) => {
 }
 
 exports.showProductDetails = async (req,res)=>{
+    const user = req.user.username; // Get the username from the authenticated user
     const productId = req.params.id; // Get the product ID from the request parameters
    const item = await Product.findById(productId);
-   res.render("productPage", { item });
+   res.render("productPage", {item, user});
 }
+
+// Update product details (only by admin)
+exports.updateProduct = async (req, res) => {
+    const productId = req.params.id; // Get the product ID from the request parameters
+    const { productName, productDescription, productPrice, productImage } = req.body; // Destructure the updated product details from the request body
+
+    try {
+        // Find the product by ID and update it with the new details
+        await Product.findByIdAndUpdate(productId, {
+            productName,
+            productDescription,
+            productPrice,
+            productImage
+        });
+        res.redirect('/home'); // Redirect to the home page after updating the product
+    } catch (error) {
+        console.error("Error updating product:", error);
+        res.status(500).send("Internal Server Error"); // Send an error response if something goes wrong
+    }
+};
+
+//delete product
+exports.deleteProduct = async (req, res) => {
+    const productId = req.params.id; // Get the product ID from the request parameters
+
+    try {
+        // Find the product by ID and delete it
+        await Product.findByIdAndDelete(productId);
+        res.redirect('/home'); // Redirect to the home page after deleting the product
+    } catch (error) {
+        console.error("Error deleting product:", error);
+        res.status(500).send("Internal Server Error"); // Send an error response if something goes wrong
+    }
+};
+    

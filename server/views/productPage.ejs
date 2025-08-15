@@ -8,18 +8,53 @@
     <body>
         <h1>Product Details</h1>
         <div>
-            <h2><%= item.productName %></h2>
+            
             <img src="<%= item.productImage %>" alt="">
-            <p><%= item.productDescription %></p>
-            <p>Price: <%= item.productPrice %></p>
-            <div class="user-view">
-                <form action="/home/addCart" method="get">
-                    <button type="submit">Add to Cart</button>
-                </form>
-                <form action="/home/buy" method="get">
-                    <button type="submit">Buy Now</button>
-                </form>
-            </div>
+            <% if (user !== "admin") { %>
+                
+             <div class="user-view">  
+                <h2><%= item.productName %></h2>
+                <p><%= item.productDescription %></p>
+                <p>Price: $<%= item.productPrice %></p>
+                <div >
+                    <form action="/home/addCart" method="get">
+                        <button type="submit">Add to Cart</button>
+                    </form>
+                    <form action="/home/buy" method="get">
+                        <button type="submit">Buy Now</button>
+                    </form>
+                </div>
+            </div> 
+            <% } else { %>
+                <div class="admin-view">
+                    <form action="/home/product/update/<%= item._id %>" method="post">
+                        <label for="productName">Product Name:</label>
+                        <input type="text" id="productName" name="productName" value="<%= item.productName %>">
+                        
+                        <label for="productDescription">Product Description:</label>
+                        <textarea id="productDescription" name="productDescription"><%= item.productDescription %></textarea>
+                        
+                        <label for="productPrice">Product Price:</label>
+                        <input type="number" id="productPrice" name="productPrice" value="<%= item.productPrice %>">
+                        
+                        <label for="productImage">Product Image URL:</label>
+                        <input type="text" id="productImage" name="productImage" value="<%= item.productImage %>">
+
+                        <button type="submit">Update Product</button>
+                    </form>
+                    <br>
+                    <form action="/home/product/delete/<%= item._id%>" method="post">
+                        <button type="submit">Delete Product</button>
+                    </form>
+
+                </div>
+                <% } %>
+            
         </div>
+        <br>
+        <hr>
+        <form action="/home" method="get">
+                    <button type="submit">Back to Home</button>
+                </form>
     </body>
 </html>

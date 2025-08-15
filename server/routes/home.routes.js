@@ -13,4 +13,8 @@ router.post("/addProduct", authMiddleware, adminMiddleware, homeController.addPr
 
 router.get("/product/:id", authMiddleware, homeController.showProductDetails); // Route to show product details by ID, requires authentication
 
+router.post("/product/update/:id", authMiddleware, adminMiddleware, homeController.updateProduct); // Route to update product details, requires authentication and admin access
+
+router.post("/product/delete/:id", authMiddleware, adminMiddleware, homeController.deleteProduct); // Route to delete a product, requires authentication and admin access
+
 module.exports = router;
