@@ -19,5 +19,6 @@ router.post("/product/delete/:id", authMiddleware, adminMiddleware, homeControll
 
 router.post("/addToCart/:id", authMiddleware, homeController.addToCart); // Route to add a product to the user's cart, requires authentication
 router.post("/removeFromCart/:id",authMiddleware, homeController.removeFromCart); // Route to remove a product from the user's cart, requires authentication
+router.get("/profile", authMiddleware, homeController.userProfile); // Route to show user profile, requires authentication
 
 module.exports = router;

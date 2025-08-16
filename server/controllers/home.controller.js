@@ -122,4 +122,11 @@ exports.removeFromCart = async (req, res) => {
     console.log(userdb.add_to_cart); // Log the updated cart for debugging
     await userdb.save(); // Save the updated user document
     res.redirect('/home'); // Redirect to the home page after removing the product from the cart
+exports.userProfile = async (req, res) => {
+    const user = req.user.username;
+    
+    // Find user by username
+    const userDb = await User.findOne({ username: user });
+
+    res.render("profilePage", { user: userDb }); // Render the profile page with the user's information
 };
