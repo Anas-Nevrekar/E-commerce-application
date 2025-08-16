@@ -77,4 +77,12 @@ exports.deleteProduct = async (req, res) => {
         res.status(500).send("Internal Server Error"); // Send an error response if something goes wrong
     }
 };
+
+exports.userProfile = async (req, res) => {
+    const user = req.user.username;
     
+    // Find user by username
+    const userDb = await User.findOne({ username: user });
+
+    res.render("profilePage", { user: userDb }); // Render the profile page with the user's information
+};

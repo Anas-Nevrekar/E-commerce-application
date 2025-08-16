@@ -17,4 +17,6 @@ router.post("/product/update/:id", authMiddleware, adminMiddleware, homeControll
 
 router.post("/product/delete/:id", authMiddleware, adminMiddleware, homeController.deleteProduct); // Route to delete a product, requires authentication and admin access
 
+router.get("/profile", authMiddleware, homeController.userProfile); // Route to show user profile, requires authentication
+
 module.exports = router;

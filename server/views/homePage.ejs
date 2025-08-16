@@ -17,6 +17,9 @@
 </head>
 <body>
     <h1><%= message %></h1>
+    <form action="home/profile" method="get">
+        <button type="submit">View Profile</button>
+    </form>
     <% if(user === "admin") { %>
         <h2>Admin Panel</h2>
     <div>
