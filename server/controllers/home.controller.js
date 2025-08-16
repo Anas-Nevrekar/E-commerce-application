@@ -5,13 +5,20 @@ const Product = require('../models/product.model'); // Importing the Product mod
 
 exports.showHome = async (req, res) => {
     const user = req.user.username;
-    const message = "Welcome to home page " + req.user.username;
+    const message = "Welcome to home page " + user;
     try {
-        const products = await Product.find(); // Fetch all products
-        res.render("homePage", { message, products, user }); // Pass products to the view
+        const userdb = await User.findOne({ username: user }); // Find the user by username from the authenticated request
+        if (!userdb) {
+            console.error("User not found:", user);
+            return res.status(404).send("User not found");
+        }
+        const products = await Product.find();
+        // Get the user's cart product IDs as strings (assuming add_to_cart is an array of ObjectIds)
+        const cartProductIds = userdb.add_to_cart ? userdb.add_to_cart.map(id => id.toString()) : [];
+        res.render("homePage", { message, products, user, cartProductIds });
     } catch (error) {
-        console.error("Error fetching products:", error);
-        res.render("homePage", { message, products: [], user }); // Pass empty array on error
+        console.error("Error in showHome:", error);
+        res.render("homePage", { message, products: [], user, cartProductIds: [] });
     }
 }
 
@@ -37,11 +44,16 @@ exports.addProduct = async (req, res) => {
     }
 }
 
-exports.showProductDetails = async (req,res)=>{
+exports.showProductDetails = async (req, res) => {
     const user = req.user.username; // Get the username from the authenticated user
     const productId = req.params.id; // Get the product ID from the request parameters
-   const item = await Product.findById(productId);
-   res.render("productPage", {item, user});
+    const item = await Product.findById(productId);
+
+     const userdb = await User.findOne({ username: user });
+    // Get the user's cart product IDs as strings (assuming add_to_cart is an array of ObjectIds)
+    const cartProductIds = userdb.add_to_cart ? userdb.add_to_cart.map(id => id.toString()) : [];
+
+    res.render("productPage", { item, user, cartProductIds });
 }
 
 // Update product details (only by admin)
@@ -77,4 +89,37 @@ exports.deleteProduct = async (req, res) => {
         res.status(500).send("Internal Server Error"); // Send an error response if something goes wrong
     }
 };
+
+
+//add to cart feature
+exports.addToCart = async (req, res) => {
+
+    const user = req.user.username;
+    // Get the user ID from the authenticated user
+    const productId = req.params.id; // Get the product ID from the request parameters
+    // console.log(user)
+    const userdb = await User.findOne({ username: user }); // Find the user by username from the authenticated request
+    // console.log(userdb)
+     
+
+
+    //Appending product id into user's add_to_cart array
+    userdb.add_to_cart.push(productId); // Add the product ID to the user's cart
+    console.log(userdb.add_to_cart); // Log the updated cart for debugging
+    await userdb.save(); // Save the updated user document
+    res.redirect('/home'); // Redirect to the home page after adding the product to the cart
+};
+
+//remove from the cart feature
+exports.removeFromCart = async (req, res) => {
+    const user = req.user.username;// Get the user ID from the authenticated user
+    const productId = req.params.id; // Get the product ID from the request parameters
+
+    const userdb = await User.findOne({ username: user });// Find the user by ID
     
+    //Removing product id from user's add_to_cart array
+    userdb.add_to_cart.pull(productId); // Remove the product ID from the user's cart
+    console.log(userdb.add_to_cart); // Log the updated cart for debugging
+    await userdb.save(); // Save the updated user document
+    res.redirect('/home'); // Redirect to the home page after removing the product from the cart
+};

@@ -72,13 +72,19 @@
                     </div>
                   <% } else { %>
                     <div class="user-view"> 
-                    <form  action="home/addCart" method="get">
-                      <button type="submit">Add to Cart</button>
-                    </form>
-                    <form  action="home/buy" method="get">
-                      <button type="submit">Buy Now</button>
-                    </form>
-                  </div>
+                      <% if (cartProductIds.includes(product._id.toString())) { %>
+                        <form action="home/removeFromCart/<%= product._id %>" method="post">
+                          <button type="submit">Remove from Cart</button>
+                        </form>
+                      <% } else { %>
+                        <form action="home/addToCart/<%= product._id %>" method="post">
+                          <button type="submit">Add to Cart</button>
+                        </form>
+                      <% } %>
+                      <form  action="home/buy" method="get">
+                        <button type="submit">Buy Now</button>
+                      </form>
+                    </div>
                   <% } %>
                   <br>
             </div>
