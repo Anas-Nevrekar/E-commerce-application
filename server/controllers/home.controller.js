@@ -133,3 +133,24 @@ exports.userProfile = async (req, res) => {
 
     res.render("profilePage", { user: userDb }); // Render the profile page with the user's information
 }
+
+exports.updateProfile = async (req, res) => {
+    const user = req.user.username; // Get the username from the authenticated user
+    const { address } = req.body; // Destructure the updated profile details from the request body
+    
+
+    try {
+        const user_col = await User.findOne({ username: user });
+
+    
+        user_col.address = address;
+        
+        await user_col.save(); // Save the updated user document
+        
+        res.redirect('/home/profile'); // Redirect to the profile page after updating
+    } catch (error) {
+        console.error("Error updating profile:", error);
+        res.status(500).send("Internal Server Error"); // Send an error response if something goes wrong
+    }
+};
+
