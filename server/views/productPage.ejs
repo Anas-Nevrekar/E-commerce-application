@@ -86,7 +86,7 @@
                 <% } %>
 
                 <!-- Feedback form -->
-                <form action="/home/product/feedback/<%= item._id %>" method="post" style="margin-top:16px;">
+                <form action="/feedback/addFeedback/<%= item._id %>" method="post" style="margin-top:16px;">
                   <label for="feedback">Give Feedback:</label><br>
                   <textarea id="feedback" name="feedback" rows="3" cols="40" required></textarea><br>
                   <button type="submit">Submit Feedback</button>

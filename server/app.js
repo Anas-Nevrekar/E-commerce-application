@@ -19,11 +19,14 @@ app.use(cookieParser()); // Middleware to parse cookies
 
 
 
+
 // Importing the login routes
 const loginRoutes = require('./routes/login.routes');
 const homeRoutes = require('./routes/home.routes');
+const feedbackRoutes = require('./routes/feedback.routes');
 app.use('/', loginRoutes); // link the login routes to the '/login' path
 app.use("/home", homeRoutes); 
+app.use("/feedback", feedbackRoutes); // link the feedback routes to the '/feedback' path
 
 
 // Start the server and listen on the specified port
