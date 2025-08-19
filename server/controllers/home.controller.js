@@ -131,7 +131,13 @@ exports.userProfile = async (req, res) => {
     // Find user by username
     const userDb = await User.findOne({ username: user });
 
-    res.render("profilePage", { user: userDb }); // Render the profile page with the user's information
+    // Fetch products in user's cart
+    let cartProducts = [];
+    if (userDb && userDb.add_to_cart && userDb.add_to_cart.length > 0) {
+        cartProducts = await Product.find({ _id: { $in: userDb.add_to_cart } });
+    }
+
+    res.render("profilePage", { user: userDb, cartProducts }); // Send cart products to frontend
 }
 
 exports.updateProfile = async (req, res) => {
