@@ -23,4 +23,7 @@ router.get("/profile", authMiddleware, homeController.userProfile); // Route to 
 
 router.post("/updateProfile", authMiddleware, homeController.updateProfile); // Route to update user profile, requires authentication
 
+router.get("/buy/:id", authMiddleware, homeController.buyPage); // Route to render the buy page for a product, requires authentication
+router.post("/buy/:id", authMiddleware, homeController.confirmBuy); // Route to confirm the purchase of a product, requires authentication
+
 module.exports = router;

@@ -154,3 +154,25 @@ exports.updateProfile = async (req, res) => {
     }
 };
 
+
+//Buy Product page
+exports.buyPage = async (req, res) => {
+    const productId = req.params.id; // Get the product ID from the request parameters
+    const product = await Product.findById(productId); // Find the product by ID
+    if (!product) {
+        return res.status(404).send("Product not found"); // Handle case where product does not exist
+    }
+    res.render("buyPage", { product }); // Render the buy page with the product details
+}
+
+// Confirm BUY product
+exports.confirmBuy = async (req, res) => {
+    const productId = req.params.id; // Get the product ID from the request parameters
+    const user = req.user.username; // Get the username from the authenticated user
+
+    const userdb = await User.findOne({ username: user }); // Find the user by username from the authenticated request
+    userdb.orders.push(productId); // Add the product ID to the user's orders
+    console.log(userdb.orders)
+    res.redirect("/home");
+}
+

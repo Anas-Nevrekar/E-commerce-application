@@ -17,7 +17,7 @@
                 <p><%= item.productDescription %></p>
                 <p>Price: $<%= item.productPrice %></p>
                 <div >
-                    <form action="/home/buy" method="get">
+                    <form action="/home/buy/<%= item._id %>" method="get">
                         <button type="submit">Buy Now</button>
                     </form>
                 </div>
