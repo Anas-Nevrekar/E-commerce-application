@@ -2,6 +2,7 @@ const User = require('../models/user.model'); // Importing the User model to int
 const {authMiddleware, generateToken} = require('../middlewares/jwt.middleware'); // Importing the JWT middleware for authentication
 
 const Product = require('../models/product.model'); // Importing the Product model to interact with products in the database
+const Feedback = require('../models/feedback.model'); // Add this at the top
 
 exports.showHome = async (req, res) => {
     const user = req.user.username;
@@ -45,18 +46,29 @@ exports.addProduct = async (req, res) => {
 }
 
 exports.showProductDetails = async (req, res) => {
-    const user = req.user.username; // Get the username from the authenticated user
-    const productId = req.params.id; // Get the product ID from the request parameters
+    const user = req.user.username;
+    const productId = req.params.id;
     const item = await Product.findById(productId);
 
-     const userdb = await User.findOne({ username: user });
-    // Get the user's cart product IDs as strings (assuming add_to_cart is an array of ObjectIds)
+    const userdb = await User.findOne({ username: user });
     const cartProductIds = userdb.add_to_cart ? userdb.add_to_cart.map(id => id.toString()) : [];
 
+    // Find all feedbacks for this product
+    const feedbacksRaw = await Feedback.find({ productId });
 
+    // For each feedback, get the username from User model
+    const feedbacks = await Promise.all(feedbacksRaw.map(async fb => {
+        const userObj = await User.findById(fb.userId);
+        return {
+            username: userObj ? userObj.username : "Unknown",
+            feedback: fb.feedback,
+            rating: fb.rating,
+            createdAt: fb.createdAt
+        };
+    }));
     
 
-    res.render("productPage", { item, user, cartProductIds });
+    res.render("productPage", { item, user, cartProductIds, feedbacks });
 }
 
 // Update product details (only by admin)

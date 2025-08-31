@@ -85,7 +85,21 @@
                   </form>
                 <% } %>
 
-              
+                <h3>Feedbacks:</h3>
+                <% if (feedbacks.length > 0) { %>
+                    <ul>
+                        <% feedbacks.forEach(feedback => { %>
+    <li>
+      <strong><%= feedback.username %></strong>: <%= feedback.feedback %>
+      <span style="color: #888;">
+        (<%= new Date(feedback.createdAt).toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'short', day: 'numeric' }) %>)
+      </span>
+    </li>
+  <% }); %>
+                    </ul>
+                <% } else { %>
+                    <p>No feedbacks yet.</p>
+                <% } %>
 
                 <!-- Feedback form -->
                 <form action="/feedback/addFeedback/<%= item._id %>" method="post" style="margin-top:16px;">
