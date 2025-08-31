@@ -53,6 +53,9 @@ exports.showProductDetails = async (req, res) => {
     // Get the user's cart product IDs as strings (assuming add_to_cart is an array of ObjectIds)
     const cartProductIds = userdb.add_to_cart ? userdb.add_to_cart.map(id => id.toString()) : [];
 
+
+    
+
     res.render("productPage", { item, user, cartProductIds });
 }
 
