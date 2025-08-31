@@ -53,7 +53,10 @@ exports.showProductDetails = async (req, res) => {
     // Get the user's cart product IDs as strings (assuming add_to_cart is an array of ObjectIds)
     const cartProductIds = userdb.add_to_cart ? userdb.add_to_cart.map(id => id.toString()) : [];
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> cf0cce4bdb5642286d1d3864214b837d78ffb126
     
 
     res.render("productPage", { item, user, cartProductIds });
@@ -96,35 +99,39 @@ exports.deleteProduct = async (req, res) => {
 
 //add to cart feature
 exports.addToCart = async (req, res) => {
-
     const user = req.user.username;
-    // Get the user ID from the authenticated user
-    const productId = req.params.id; // Get the product ID from the request parameters
-    // console.log(user)
-    const userdb = await User.findOne({ username: user }); // Find the user by username from the authenticated request
-    // console.log(userdb)
-     
+    const productId = req.params.id;
+    const userdb = await User.findOne({ username: user });
 
+    // Only add if not already in cart
+    if (!userdb.add_to_cart.includes(productId)) {
+        userdb.add_to_cart.push(productId);
+        await userdb.save();
+    }
 
-    //Appending product id into user's add_to_cart array
-    userdb.add_to_cart.push(productId); // Add the product ID to the user's cart
-    console.log(userdb.add_to_cart); // Log the updated cart for debugging
-    await userdb.save(); // Save the updated user document
-    res.redirect('/home'); // Redirect to the home page after adding the product to the cart
+    // If referrer is product page, redirect back to product page, else home
+    if (req.headers.referer && req.headers.referer.includes(`/home/product/${productId}`)) {
+        res.redirect(`/home/product/${productId}`);
+    } else {
+        res.redirect('/home');
+    }
 };
 
 //remove from the cart feature
 exports.removeFromCart = async (req, res) => {
-    const user = req.user.username;// Get the user ID from the authenticated user
-    const productId = req.params.id; // Get the product ID from the request parameters
+    const user = req.user.username;
+    const productId = req.params.id;
+    const userdb = await User.findOne({ username: user });
 
-    const userdb = await User.findOne({ username: user });// Find the user by ID
-    
-    //Removing product id from user's add_to_cart array
-    userdb.add_to_cart.pull(productId); // Remove the product ID from the user's cart
-    console.log(userdb.add_to_cart); // Log the updated cart for debugging
-    await userdb.save(); // Save the updated user document
-    res.redirect('/home'); // Redirect to the home page after removing the product from the cart
+    userdb.add_to_cart.pull(productId);
+    await userdb.save();
+
+    // If referrer is product page, redirect back to product page, else home
+    if (req.headers.referer && req.headers.referer.includes(`/home/product/${productId}`)) {
+        res.redirect(`/home/product/${productId}`);
+    } else {
+        res.redirect('/home');
+    }
 };
 
 // User profile feature
@@ -184,4 +191,31 @@ exports.confirmBuy = async (req, res) => {
     console.log(userdb.orders)
     res.redirect("/home");
 }
+
+// Show buy cart page
+exports.buyCartPage = async (req, res) => {
+    const user = req.user.username;
+    const userDb = await User.findOne({ username: user });
+    let cartProducts = [];
+    let total = 0;
+    if (userDb && userDb.add_to_cart && userDb.add_to_cart.length > 0) {
+        cartProducts = await Product.find({ _id: { $in: userDb.add_to_cart } });
+        total = cartProducts.reduce((sum, p) => sum + (p.productPrice || 0), 0);
+    }
+    res.render("buyCartPage", { cartProducts, total });
+};
+
+// Confirm buy cart
+exports.confirmBuyCart = async (req, res) => {
+    const user = req.user.username;
+    const userDb = await User.findOne({ username: user });
+    if (userDb && userDb.add_to_cart && userDb.add_to_cart.length > 0) {
+        // Add all cart products to orders
+        userDb.orders = userDb.orders.concat(userDb.add_to_cart);
+        // Clear the cart
+        userDb.add_to_cart = [];
+        await userDb.save();
+    }
+    res.redirect("/home");
+};
 

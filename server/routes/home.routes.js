@@ -28,4 +28,7 @@ router.post("/updateProfile", authMiddleware, homeController.updateProfile); // 
 router.get("/buy/:id", authMiddleware, homeController.buyPage); // Route to render the buy page for a product, requires authentication
 router.post("/buy/:id", authMiddleware, homeController.confirmBuy); // Route to confirm the purchase of a product, requires authentication
 
+router.get("/buyCart", authMiddleware, homeController.buyCartPage); // Show buy cart page
+router.post("/buyCart", authMiddleware, homeController.confirmBuyCart); // Confirm buy cart
+
 module.exports = router;

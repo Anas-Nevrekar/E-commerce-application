@@ -76,14 +76,16 @@
                     </form>
                 </div>
                 <% if (cartProductIds.includes(item._id.toString())) { %>
-                  <form action="/home/removeFromCart/<%= item._id %>" method="post">
+                  <form action="/home/removeFromCart/<%=item._id %>" method="post">
                     <button type="submit">Remove from Cart</button>
                   </form>
                 <% } else { %>
-                  <form action="/home/addToCart/<%= item._id %>" method="post">
+                  <form action="/home/addToCart/<%=item._id %>" method="post">
                     <button type="submit">Add to Cart</button>
                   </form>
                 <% } %>
+
+              
 
                 <!-- Feedback form -->
                 <form action="/feedback/addFeedback/<%= item._id %>" method="post" style="margin-top:16px;">
